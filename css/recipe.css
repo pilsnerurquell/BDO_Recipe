@@ -149,14 +149,14 @@ body{
       }
       #control {
           display: flex;
-          padding: 0 0 2% 0;
+          padding: 2% 0% 2% 0%;
+      }
+      #control2{
+          width: 12%;
+          margin: 0 0 0 20px;
       }
       #cont1{
           width: 50%;
-      }
-      #cont2{
-          width: 12%;
-          margin: 0 0 0 20px;
       }
       #cont3{
           width: 15%;
@@ -168,7 +168,7 @@ body{
       #rank::-webkit-scrollbar{
           display: none;
       }
-      #data,#sakusei,#rank{
+      #data,#sakusei,#rank,#konpou{
           padding: 10px 15px;
           font-size: 18px;
       }
@@ -178,7 +178,7 @@ body{
       #data{
           width: 400px;
       }
-      #sakusei{
+      #sakusei,#konpou{
           text-align: center;
       }
       #bunryou1,#bunryou2,#bunryou3,#bunryou4,#bunryou5,#bunryou6{
