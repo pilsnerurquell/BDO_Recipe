@@ -25,7 +25,7 @@
             </ul>
       
         <form id="erabu">
-          <p id="control">
+          <div id="control">
              <label id="cont3"><span>皇室納品</span><br>
                  <select id="rank" size= "7">
                    <option value="見習い">見習い</option>
@@ -37,14 +37,19 @@
                    <option value="all">すべて</option>
                  </select>
              </label>
-             
              <label id="cont1"><span>レシピ</span><br>
                  <select id="data" size="10"></select>
              </label>
-             <label id="cont2"><span>作成数</span><br>
-               <input type="number" id="sakusei" placeholder="数量を入力">
-             </label>
-          </p>
+             <p id="control2">
+             
+               <label id="cont2"><span>作成数</span><br>
+                 <input type="number" id="sakusei" placeholder="数量を入力">
+               </label><br><br>
+               <label id="cont4"><span>梱包数</span><br>
+                 <input id="konpou" readonly>
+               </label>
+             </p>
+          </div>
         
           <div>
             <p class="hyouji">
@@ -204,7 +209,7 @@
                  $("#cook").show();
                  $("#alc").hide();
                  $("#data").change(function(){
-                 $(".hyouji input,#kouka,#sakusei").val('');
+                 $(".hyouji input,#kouka,#sakusei,#konpou").val('');
                  $("#sozai1").val(cookingRecipe[$(this).val()].素材1);
                  $("#sozai2").val(cookingRecipe[$(this).val()].素材2);
                  $("#sozai3").val(cookingRecipe[$(this).val()].素材3);
@@ -218,6 +223,8 @@
                  $("#bunryou5").val(cookingRecipe[$(this).val()].分量5);
                  
                  $("#kouka").val(cookingRecipe[$(this).val()].効果);
+                 
+                 $("#konpou").val(cookingRecipe[$(this).val()].包数);
                  });
            });
            $("#rank").change(function(){
@@ -253,7 +260,7 @@
                  //セレクトボックス切り替えで素材と分量の表示
                  
                  $("#data").change(function(){
-                 $(".hyouji input,#kouka,#sakusei").val('');
+                 $(".hyouji input,#kouka,#sakusei,#konpou").val('');
                  $("#sozai1").val(cookingRecipe[$(this).val()].素材1);
                  $("#sozai2").val(cookingRecipe[$(this).val()].素材2);
                  $("#sozai3").val(cookingRecipe[$(this).val()].素材3);
@@ -267,6 +274,8 @@
                  $("#bunryou5").val(cookingRecipe[$(this).val()].分量5);
                  
                  $("#kouka").val(cookingRecipe[$(this).val()].効果);
+                 
+                 $("#konpou").val(cookingRecipe[$(this).val()].包数);
                  });
                }
                  $("#rank").change(function(){
@@ -293,7 +302,7 @@
                  $("#data").append("<option value=" +alchemyRecipe[i].id+ ">" +alchemyRecipe[i].レシピ+ "</option>");
                  //セレクトボックス切り替えで素材と分量の表示
                  $("#data").change(function(){
-                   $(".hyouji input,#kouka,#sakusei").val('');
+                   $(".hyouji input,#kouka,#sakusei,#konpou").val('');
                    $("#sozai1").val(alchemyRecipe[$(this).val()].素材1);
                    $("#sozai2").val(alchemyRecipe[$(this).val()].素材2);
                    $("#sozai3").val(alchemyRecipe[$(this).val()].素材3);
@@ -307,6 +316,8 @@
                    $("#bunryou5").val(alchemyRecipe[$(this).val()].分量5);
                    
                    $("#kouka").val(alchemyRecipe[$(this).val()].効果);
+                   
+                   $("#konpou").val(cookingRecipe[$(this).val()].包数);
                  });
                }
                  $("#rank").change(function(){
