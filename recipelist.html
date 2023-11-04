@@ -46,7 +46,7 @@
                  <input type="number" id="sakusei" placeholder="数量を入力">
                </label><br><br>
                <label id="cont4"><span>梱包数</span><br>
-                 <input id="konpou" readonly>
+                 <input type="number" id="konpou" readonly>
                </label>
              </p>
           </div>
@@ -317,7 +317,7 @@
                    
                    $("#kouka").val(alchemyRecipe[$(this).val()].効果);
                    
-                   $("#konpou").val(cookingRecipe[$(this).val()].包数);
+                   $("#konpou").val(alchemyRecipe[$(this).val()].包数);
                  });
                }
                  $("#rank").change(function(){
