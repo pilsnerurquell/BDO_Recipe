@@ -1,0 +1,108 @@
+body{
+    font-family: "Times New Roman";
+    width: auto;
+    height: 100%;
+    padding: 0 2%;
+    background: #DCDCDC url(back_image4.jpg) repeat right top;
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+
+      #main{
+          padding: 2%;
+          width: 100%;
+          height: 100%;
+          justify-content: space-around;
+            display: -webkit-inline-flex;
+            display: inline-flex;
+      }
+      #info1{
+          width: 400px;
+          height: 100%;
+          padding: 2% 1%;
+          border-radius: 10px;
+          background: #F5F5F5;
+          box-shadow: 5px 5px 10px #333;
+          font-size: 14px;
+          font-family: sans-serif;
+      }
+      #info2{
+          width: 90%;
+          height: 100%;
+          margin: 0% 2% 0% 1%;
+          padding: 2%;
+          border-radius: 10px;
+          background: #F5F5F5;
+          box-shadow: 5px 5px 10px #333;
+          font-size: 15px;
+          font-family: sans-serif;
+      }
+      #erabu{
+          padding-bottom: 10%;
+      }
+      
+      
+      
+      .midashi{
+          font-size: 20px;
+          margin: 5% 0% 3% 0%;
+          
+      }
+      .nakami_2:hover,span:hover,li:hover{
+          color: #33ccff;
+      }
+      .nakami_2::before,span::before,li::before{
+          content: "＋";
+          font-weight: bold;
+          cursor: pointer;
+      }
+      .nakami_2.open::before,span.open::before,li.open::before{
+          content: "－";
+          font-weight: bold;
+      }
+      
+      
+      
+      .nakami{
+          font-size: 16px;
+          padding-left: 18px;
+      }
+      .nakami_2{
+          padding-top: 5%;
+          cursor: pointer;
+      }
+      .nakami > dd{
+          font-size: 14px;
+          display: none;
+      }
+      
+      
+      ul{
+          display: none;
+      }
+      span{
+          font-size: 22px;
+          cursor: pointer;
+          display: list-item;
+          list-style-type: none;
+      }
+      
+      li{
+          font-size: 18px;
+          cursor: pointer;
+          list-style-type: none;
+      }
+      
+footer,address{
+    display: block;
+}
+footer {
+    clear: both;
+    text-align: center;
+    padding: 5px;
+    font-size: 80%;
+    margin:5px;
+    bottom: 0;
+    align-items: center;
+}
