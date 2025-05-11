@@ -3,7 +3,7 @@ body{
     width: auto;
     height: 100%;
     padding: 0 2%;
-    background: #DCDCDC url(../images/back_image4.jpg) repeat right top;
+    background: #DCDCDC url(back_image4.jpg) repeat right top;
     background-size: cover; 
     background-attachment: fixed;
     overflow-y: scroll;
