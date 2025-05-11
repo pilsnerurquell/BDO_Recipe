@@ -3,60 +3,42 @@
   <head>
     <title>recipe</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="./recipe.css?20190109" media="all">
+    <link rel="stylesheet" type="text/css" href="css/recipe.css?20190109" media="all">
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://github.com/pilsnerurquell/BDO_Recipe/blob/16cceff16d9f806127ef4e53a692819ee94eeb9c/cooking.json"></script>
-    <script src="https://github.com/pilsnerurquell/BDO_Recipe/blob/16cceff16d9f806127ef4e53a692819ee94eeb9c/alchemy.json"></script>
-    
-    <style>
-    ul, li {
-      list-style-type: none;
-    }
-    .openable {
-      cursor: pointer;
-      position: relative;
-      margin: 4px 0;
-    }
-    .openable::before {
-      content: '＋';
-      margin-right: 5px;
-    }
-    .openable.open::before {
-      content: '－';
-    }
-    .recipe-title {
-      font-weight: bold;
-    }
-    .control-buttons button {
-      margin-right: 8px;
-    }
-  </style>
   </head>
   
   
   <body>
   
+    <div class="scroll-box">
+      <div class="scroll-content"></div>
+    </div>
+      
+      
       <div id="main">
       
       
           <div id="info1">
               
-                            
-              <div id="erabu">
-                    <label><input type="radio" value="all" checked>全て</label>
-                    <label><input type="radio" value="見習い">見習</label>
-                    <label><input type="radio" value="熟練">熟練</label>
-                    <label><input type="radio" value="専門">専門</label><br>
-                    <label><input type="radio" value="職人">職人</label>
-                    <label><input type="radio" value="名匠">名匠</label>
-                    <label><input type="radio" value="道人">道人</label>
-              </div>
+              <p>製作数の入力</p>
+              <input type="number" name="num" id="sak" placeholder="数量を入力">
+              
+              <p>皇室納品</p>
+              <form id="erabu">
+                    <label><input type="radio" name="sort" value="all" checked>全て</label>
+                    <label><input type="radio" name="sort" value="見習い">見習</label>
+                    <label><input type="radio" name="sort" value="熟練">熟練</label>
+                    <label><input type="radio" name="sort" value="専門">専門</label><br>
+                    <label><input type="radio" name="sort" value="職人">職人</label>
+                    <label><input type="radio" name="sort" value="名匠">名匠</label>
+                    <label><input type="radio" name="sort" value="道人">道人</label>
+              </form>
               
               
-              <dl>
+              <dl id="sozai">
                     <dt class="midashi">互換素材</dt>
                     
                         <dl class="nakami">
@@ -67,9 +49,11 @@
                             <dt class="nakami_2">魚類</dt>
                                 <dd>川魚・海魚全般</dd>
                             <dt class="nakami_2">海産物</dt>
-                                <dd>貝・イカ・カニ・クラゲ<br>コウイカ・タコ・タツノオトシゴ<br>ヒトデ・スッポン</dd>
+                                <dd>貝・イカ・カニ・クラゲ<br>コウイカ・タコ・タツノオトシゴ<br>
+                                ヒトデ・スッポン・ザリガニ<br>ベニズワイガニ</dd>
                             <dt class="nakami_2">一般肉類</dt>
-                                <dd>羊肉・豚肉・牛肉・イタチ肉<br>オオカミ肉・キツネ肉・クマ肉<br>サイの肉・シカ肉・タヌキ肉・ヤギ肉</dd>
+                                <dd>羊肉・豚肉・牛肉・イタチ肉<br>オオカミ肉・キツネ肉・クマ肉<br>
+                                サイの肉・シカ肉・タヌキ肉・ヤギ肉</dd>
                             <dt class="nakami_2">鳥肉</dt>
                                 <dd>鶏肉・フラミンゴ肉・クークー鳥肉</dd>
                             <dt class="nakami_2">爬虫類肉</dt>
@@ -127,6 +111,9 @@
                             <dt class="nakami_2">みじん切りにした鳥肉</dt>
                                 <dd>鳥肉・鶏肉を粉砕</dd>
                         </dl>
+              <div class="scroll-box2">
+                <div class="scroll-content2"></div>
+              </div>
               </dl>
               
               
@@ -134,13 +121,14 @@
           
           
           <div id="info2">
-              
-              
-              <span id="cook">料理</span>
+
+              <button id="collapseAll">すべて閉じる</button>
+
+              <p id="cook">料理</p>
                         <ul class="cook_na1">
                         </ul>
                     
-              <span id="alc">錬金</span>
+              <p id="alc">錬金</p>
                     
                         <ul id="alc_na1">                        
                         </ul>
@@ -154,40 +142,52 @@
       
       
       <script>
-          let cookingRecipe, alchemyRecipe;
           
-          
-          $(function(){
-              //アコーディオン動作
-              $('.midashi,.nakami_2,#cook,#alc').click(function(event){
-                $(this).next().slideToggle();
-                $(this).toggleClass("open");
-              });
-              
-          });
 
           function renderRecipeTree(recipe, allRecipes, multiplier = 1) {
-            const $li = $(`<li class="openable">${recipe.レシピ}（×${multiplier}）</li>`);
+            const $li = $(`<li class="openable recipe-item"></li>`);
+            const $label = $(`<span class="recipe-label" data-name="${recipe.レシピ}">${recipe.レシピ}　… ${multiplier}</span>`);
+            $li.append($label);
+          
             const $detail = $('<ul style="display: none;"></ul>');
+            let hasChild = false;
+            
+            
             for (let i = 1; i <= 5; i++) {
               const material = recipe[`素材${i}`];
               const qty = recipe[`分量${i}`];
+          
               if (material && qty) {
-                const match = allRecipes.find(r => r.レシピ === material);
                 const scaledQty = qty * multiplier;
-                if (match) {
-                  $detail.append(renderRecipeTree(match, allRecipes, scaledQty));
+                const subRecipe = allRecipes.find(r => r.レシピ === material); // ← ここで定義！
+          
+                if (subRecipe) {
+                  const $child = renderRecipeTree(subRecipe, allRecipes, scaledQty);
+                  
+                  if ($child.hasClass("has-child")) {
+                    hasChild = true;
+                  }
+                  
+                  $detail.append($child);
                 } else {
-                  $detail.append(`<li>${material} × ${scaledQty}</li>`);
+                // 単素材
+                  $detail.append(`<li>${material} 　… ${scaledQty}</li>`);
                 }
+
               }
             }
+            
+            if (hasChild) {
+              $li.addClass("has-child");
+              $label.addClass("has-child-label");
+            }
+            
             $li.append($detail);
-            return $li;
+            return $li; 
           }
           
           
-          function renderCookingList(data, $container) {
+          function renderCookingList(data, $container,multiplier) {
             $container.empty();
             const grouped = data.reduce((acc, item) => {
               if (!acc[item.五十音]) acc[item.五十音] = [];
@@ -195,10 +195,10 @@
               return acc;
             }, {});
             for (const [group, recipes] of Object.entries(grouped)) {
-              const $groupLi = $(`<li class="openable"><strong>${group}</strong></li>`);
-              const $subList = $('<ul style="display:none;"></ul>');
+              const $groupLi = $(`<li class="openable category-group"><strong>${group}</strong></li>`);
+              const $subList = $('<ul style="display: none;"></ul>');
               for (const recipe of recipes) {
-                $subList.append(renderRecipeTree(recipe, data));
+                $subList.append(renderRecipeTree(recipe, data, multiplier));
               }
               $groupLi.append($subList);
               $container.append($groupLi);
@@ -206,7 +206,7 @@
           }
 
 
-          function renderAlchemyList(data, $container) {
+          function renderAlchemyList(data, $container,multiplier) {
             $container.empty();
             const grouped = data.reduce((acc, item) => {
               if (!acc[item.分類]) acc[item.分類] = [];
@@ -214,32 +214,10 @@
               return acc;
             }, {});
             for (const [group, recipes] of Object.entries(grouped)) {
-              const $groupLi = $(`<li class="openable"><strong>${group}</strong></li>`);
-              const $subList = $('<ul style="display:none;"></ul>');
+              const $groupLi = $(`<li class="openable category-group"><strong>${group}</strong></li>`);
+              const $subList = $('<ul style="display: none;"></ul>');
               for (const recipe of recipes) {
-                const $recipeLi = $(`<li class="recipe-title openable">${recipe.レシピ}</li>`);
-                const $detail = $('<ul style="display:none;"></ul>');
-                $recipeLi.on("click", function (e) {
-                  e.stopPropagation();
-                  if ($detail.children().length === 0) {
-                    for (let i = 1; i <= 5; i++) {
-                      const material = recipe[`素材${i}`];
-                      const qty = recipe[`分量${i}`];
-                      if (material && qty) {
-                       const match = data.find(r => r.レシピ === material);
-                        if (match) {
-                        $detail.append(renderRecipeTree(match, data, qty));
-                        } else {
-                        $detail.append(`<li>${material} × ${qty}</li>`);
-                        }
-                      }
-                    }
-                  }
-                  $detail.slideToggle();
-                  $recipeLi.toggleClass("open");
-                });
-                $recipeLi.append($detail);
-                $subList.append($recipeLi);
+                $subList.append(renderRecipeTree(recipe, data, multiplier));
               }
               $groupLi.append($subList);
               $container.append($groupLi);
@@ -253,28 +231,112 @@
 
 
 
-          // 初期読み込みとフィルター連動
-          $(function() {
-            $.getJSON("cooking.json", function(cookData) {
-              cookingRecipe = cookData;
-              // const val = $('#erabu input[name="sort"]:checked').val();
-              // const filtered = filterByDeliveryType(cookData, val);
-              renderCookingList(cookData, $(".cook_na1"));
-            });
 
-            $.getJSON("alchemy.json", function(alcData) {
-              alchemyRecipe = alcData;
-              // const val = $('#erabu input[name="sort"]:checked').val();
-              // const filtered = filterByDeliveryType(alcData, val);
-              renderAlchemyList(alcData, $("#alc_na1"));
+          $(function(){
+              //アコーディオン動作
+              $('.nakami_2').click(function(event){
+                $(this).next().slideToggle();
+                $(this).toggleClass("open");
+              });
+              
+          });
+          
+          $(document).on("click",".openable",function (e) {
+              e.stopPropagation();
+              $(this).toggleClass("open")
+              $(this).children("ul").slideToggle();
+              
+          });
+          
+          $(document).on("click", "#collapseAll", function () {
+            $(".openable.open").removeClass("open").children("ul").slideUp();
+            
+            //展開状態をクリア
+            sessionStorage.removeItem("openRecipes");
+            sessionStorage.removeItem("openGroups");
+          });
+          
+          
+          
+          let cookingData = [];
+          let alchemyData = [];
+          
+          
+          function saveOpenState() {
+            const openRecipes = $(".recipe-label").filter(function () {
+              return $(this).closest('.openable').hasClass('open');
+            }).map(function () {
+              return $(this).data('name');
+            }).get();
+            
+            const openGroups = $(".category-group").filter(function () {
+              return $(this).hasClass('open');
+              }).map(function () {
+              return $(this).find("strong").text();
+            }).get();
+            
+            sessionStorage.setItem("openRecipes", JSON.stringify(openRecipes));
+            sessionStorage.setItem("openGroups", JSON.stringify(openGroups));
+          }
+          
+          
+          function restoreOpenState() {
+            const openRecipes = JSON.parse(sessionStorage.getItem("openRecipes") || "[]");
+            const openGroups = JSON.parse(sessionStorage.getItem("openGroups") || "[]");
+            
+            $(".recipe-label").each(function () {
+              if (openRecipes.includes($(this).data("name"))) {
+                const $li = $(this).closest('.openable');
+                $li.addClass("open");
+                $li.children("ul").show();
+              }
             });
+            
+            $(".category-group").each(function () {
+              const groupName = $(this).find("strong").text();
+              if (openGroups.includes(groupName)) {
+                $(this).addClass("open");
+                $(this).children("ul").show();
+              }
+            });
+          }
 
-            $('#erabu input[name="sort"]').on('change', function() {
-              const val = $(this).val();
-              renderCookingList(filterByDeliveryType(cookingRecipe, val), $(".cook_na1"));
-              renderAlchemyList(filterByDeliveryType(alchemyRecipe, val), $("#alc_na1"));
+          
+          function renderAll(multiplier = 1) {
+            saveOpenState();
+            const val = $('#erabu input[name="sort"]:checked').val() || "all";
+            
+            
+            // 再描画
+            renderCookingList(filterByDeliveryType(cookingData, val), $(".cook_na1"), multiplier);
+            renderAlchemyList(filterByDeliveryType(alchemyData, val), $("#alc_na1"), multiplier);
+            
+            restoreOpenState();
+            
+          }
+          
+          $(function () {
+            let multiplier = parseFloat($('#sak').val()) || 1;
+            
+            $('#sak').on('input', function () {
+              multiplier = parseFloat($(this).val()) || 1;
+              renderAll(multiplier);
+            });
+            
+            $('#erabu input[name="sort"]').on('change', function () {
+              renderAll(multiplier);
+            });
+            
+            $.getJSON("json/cooking.json", function (cookData) {
+              cookingData = cookData;
+              $.getJSON("json/alchemy.json", function (alcData) {
+                alchemyData = alcData;
+                renderAll(multiplier); // データ取得後に描画
+              });
             });
           });
+
+
       </script>
       
       
