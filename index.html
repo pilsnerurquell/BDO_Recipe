@@ -327,9 +327,9 @@
               renderAll(multiplier);
             });
             
-            $.getJSON("json/cooking.json", function (cookData) {
+            $.getJSON("cooking.json", function (cookData) {
               cookingData = cookData;
-              $.getJSON("json/alchemy.json", function (alcData) {
+              $.getJSON("alchemy.json", function (alcData) {
                 alchemyData = alcData;
                 renderAll(multiplier); // データ取得後に描画
               });
