@@ -3,7 +3,7 @@
   <head>
     <title>recipe</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/recipe.css?20190109" media="all">
+    <link rel="stylesheet" type="text/css" href="recipe.css?20190109" media="all">
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -335,9 +335,9 @@
               renderAll(multiplier);
             });
             
-            $.getJSON("json/cooking.json", function (cookData) {
+            $.getJSON("cooking.json", function (cookData) {
               cookingData = cookData;
-              $.getJSON("json/alchemy.json", function (alcData) {
+              $.getJSON("alchemy.json", function (alcData) {
                 alchemyData = alcData;
                 renderAll(multiplier); // データ取得後に描画
               });
