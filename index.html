@@ -195,9 +195,9 @@
           }
           
           
-          function renderCookingList(data, $container,multiplier) {
+          function renderCookingList(filteredList, $container, multiplier, allRecipes) {
             $container.empty();
-            const grouped = data.reduce((acc, item) => {
+            const grouped = filteredList.reduce((acc, item) => {
               if (!acc[item.五十音]) acc[item.五十音] = [];
               acc[item.五十音].push(item);
               return acc;
@@ -206,7 +206,7 @@
               const $groupLi = $(`<li class="openable category-group"><strong>${group}</strong></li>`);
               const $subList = $('<ul style="display: none;"></ul>');
               for (const recipe of recipes) {
-                $subList.append(renderRecipeTree(recipe, data, multiplier));
+                $subList.append(renderRecipeTree(recipe, allRecipes, multiplier));
               }
               $groupLi.append($subList);
               $container.append($groupLi);
@@ -214,9 +214,9 @@
           }
 
 
-          function renderAlchemyList(data, $container,multiplier) {
+          function renderAlchemyList(filteredList, $container,multiplier,allRecipes) {
             $container.empty();
-            const grouped = data.reduce((acc, item) => {
+            const grouped = filteredList.reduce((acc, item) => {
               if (!acc[item.分類]) acc[item.分類] = [];
               acc[item.分類].push(item);
               return acc;
@@ -225,7 +225,7 @@
               const $groupLi = $(`<li class="openable category-group"><strong>${group}</strong></li>`);
               const $subList = $('<ul style="display: none;"></ul>');
               for (const recipe of recipes) {
-                $subList.append(renderRecipeTree(recipe, data, multiplier));
+                $subList.append(renderRecipeTree(recipe, allRecipes, multiplier));
               }
               $groupLi.append($subList);
               $container.append($groupLi);
@@ -311,15 +311,18 @@
 
           
           function renderAll(multiplier = 1) {
-            saveOpenState();
+            saveOpenState(); //現在の開閉状態をsessionStorageに保存
             const val = $('#erabu input[name="sort"]:checked').val() || "all";
             
             
-            // 再描画
-            renderCookingList(filterByDeliveryType(cookingData, val), $(".cook_na1"), multiplier);
-            renderAlchemyList(filterByDeliveryType(alchemyData, val), $("#alc_na1"), multiplier);
+            // ソート条件に応じてフィルタ、再描画
+            const filteredCooking = filterByDeliveryType(cookingData, val);
+            renderCookingList(filteredCooking, $(".cook_na1"), multiplier, cookingData);
             
-            restoreOpenState();
+            const filteredAlchemy = filterByDeliveryType(alchemyData, val);
+            renderAlchemyList(filteredAlchemy, $("#alc_na1"), multiplier, alchemyData);
+            
+            restoreOpenState(); //再描画後に開閉状態を復元
             
           }
           
